@@ -139,7 +139,7 @@ elif page == "Analytics":
     axes[1, 1].set_title("Longitude Distribution")
     axes[1, 1].set_xlabel("Longitude")
 
-    sns.histplot(data=data["Year"], kde=False, ax=axes[1, 2])
+    sns.histplot(data=data["Year"], kde=True, ax=axes[1, 2])
     axes[1, 2].set_title("Earthquakes by Year")
     axes[1, 2].set_xlabel("Year")
     plt.setp(axes[1, 2].xaxis.get_majorticklabels(), rotation=45)
@@ -277,7 +277,6 @@ elif page == "Prediction":
     st.markdown("---")
 
     if st.button("🔍 Predict Tsunami Risk"):
-        # order must match training columns
         input_data = np.array([[
             magnitude, cdi, mmi, sig, nst,
             dmin, gap, depth, latitude,
@@ -290,15 +289,14 @@ elif page == "Prediction":
         else:
             proba = None
 
-        # Result section
         st.subheader("Prediction Result")
 
         result_col1, result_col2 = st.columns(2)
         with result_col1:
             if pred == 1:
-                st.success("⚠️ Tsunami likely for this event.")
+                st.success(" Tsunami likely for this event.")
             else:
-                st.info("✅ Tsunami unlikely for this event.")
+                st.info("Tsunami unlikely for this event.")
 
         with result_col2:
             if proba is not None:
@@ -339,3 +337,4 @@ elif page == "Prediction":
         st.pyplot(fig_loc)
 
         st.caption("Prediction based on GradientBoostingClassifier trained on historical data.")
+        st.markdown("<center>Made by Soumya using Machine Learning & Streamlit</center>", unsafe_allow_html=True)
