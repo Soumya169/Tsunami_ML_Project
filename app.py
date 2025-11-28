@@ -24,7 +24,6 @@ with open(model_path, "rb") as f:
 
 data = pd.read_csv(data_path)
 
-# Ensure column order (must match training)
 FEATURE_COLUMNS = [
     "magnitude", "cdi", "mmi", "sig", "nst",
     "dmin", "gap", "depth", "latitude",
@@ -220,7 +219,6 @@ elif page == "Prediction":
         """
     )
 
-    # compute ranges from data
     def col_min_max(col):
         return float(data[col].min()), float(data[col].max()), float(data[col].mean())
 
@@ -308,7 +306,6 @@ elif page == "Prediction":
             else:
                 st.write("Model does not support probability output.")
 
-        # Simple visualization: Magnitude position
         st.markdown("#### 📊 Where does your magnitude fall compared to all earthquakes?")
         fig_mag, ax_mag = plt.subplots(figsize=(8, 3))
         sns.histplot(data["magnitude"], kde=True, ax=ax_mag)
@@ -318,7 +315,6 @@ elif page == "Prediction":
         ax_mag.legend()
         st.pyplot(fig_mag)
 
-        # Location visualization
         st.markdown("#### 🌎 Your Event Location on Map of Earthquakes")
         fig_loc, ax_loc = plt.subplots(figsize=(8, 4))
         sns.scatterplot(
