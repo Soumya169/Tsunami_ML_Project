@@ -7,7 +7,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ------------------ PAGE CONFIG ------------------
 st.set_page_config(
     page_title="🌊 Tsunami Risk Analysis & Prediction",
     page_icon="🌊",
@@ -16,7 +15,6 @@ st.set_page_config(
 
 sns.set_style("whitegrid")
 
-# ------------------ LOAD MODEL & DATA ------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "tsunami_model.pkl")
 data_path = os.path.join(BASE_DIR, "tsunami_data_clean.csv")
@@ -33,7 +31,6 @@ FEATURE_COLUMNS = [
     "longitude", "Year", "Month"
 ]
 
-# ------------------ HELPER: BASIC STATS ------------------
 total_events = len(data)
 total_tsunami = int((data["tsunami"] == 1).sum())
 total_no_tsunami = int((data["tsunami"] == 0).sum())
@@ -41,7 +38,6 @@ tsunami_ratio = total_tsunami / total_events if total_events > 0 else 0
 
 year_min, year_max = int(data["Year"].min()), int(data["Year"].max())
 
-# ------------------ SIDEBAR NAV ------------------
 st.sidebar.title("🌊 Navigation")
 page = st.sidebar.radio(
     "Go to",
@@ -49,9 +45,7 @@ page = st.sidebar.radio(
     index=0
 )
 
-# ======================================================
-# 1️⃣ OVERVIEW PAGE
-# ======================================================
+
 if page == "Overview":
     st.title("🌊 Global Earthquake – Tsunami Risk Analysis")
     st.markdown(
@@ -63,11 +57,9 @@ if page == "Overview":
         - 🔍 **Analyze tsunami vs non-tsunami patterns**
         - 🤖 **Predict tsunami risk** for a new earthquake event
         
-        ---
         """
     )
 
-    # Top metrics row
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Total Events", f"{total_events}")
@@ -113,9 +105,6 @@ if page == "Overview":
 
     st.caption(f"Dataset period: **{year_min}–{year_max}** | Source: Global Earthquake–Tsunami Risk Assessment Dataset")
 
-# ======================================================
-# 2️⃣ ANALYTICS PAGE
-# ======================================================
 elif page == "Analytics":
     st.title("📊 Detailed Analytics & Visualizations")
 
@@ -128,7 +117,6 @@ elif page == "Analytics":
         """
     )
 
-    # ---------- Distributions ----------
     st.subheader("1. Feature Distributions")
 
     fig, axes = plt.subplots(2, 3, figsize=(18, 8))
@@ -160,7 +148,6 @@ elif page == "Analytics":
     plt.tight_layout()
     st.pyplot(fig)
 
-    # ---------- Boxplots ----------
     st.subheader("2. Tsunami vs Non-Tsunami (Boxplots)")
 
     fig2, axes2 = plt.subplots(2, 3, figsize=(18, 8))
@@ -185,7 +172,6 @@ elif page == "Analytics":
     plt.tight_layout()
     st.pyplot(fig2)
 
-    # ---------- Scatterplots ----------
     st.subheader("3. Scatterplots")
 
     fig3, axes3 = plt.subplots(1, 2, figsize=(18, 5))
@@ -221,9 +207,6 @@ elif page == "Analytics":
 
     st.caption("These visualizations are adapted from your Colab EDA for a web-friendly format.")
 
-# ======================================================
-# 3️⃣ PREDICTION PAGE
-# ======================================================
 elif page == "Prediction":
     st.title("🤖 Tsunami Risk Prediction")
     st.markdown(
